@@ -7,11 +7,21 @@
   </head>
   <body>
     <h1>Dynamic Quote Generator</h1>
+    <div>
+      <label for="categoryFilter">Filter by Category:</label>
+      <select id="categoryFilter" onchange="filterQuotes()">
+          <option value="all">All Categories</option>
+      </select>
+    </div>
+
     <div id="quoteDisplay"></div>
     <button id="newQuote">Show New Quote</button>
+
     <div id="quoteFormContainer"></div>
+
     <button id="exportQuotes">Export Quotes as JSON</button>
     <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+    
     <script src="script.js"></script>
   </body>
   </html>
