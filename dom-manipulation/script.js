@@ -110,6 +110,18 @@ function filterQuotes() {
     showRandomQuote(); // Update the displayed quote
 }
 
+// Function to show notifications
+function showNotification(message, type = "info") {
+    const notification = document.createElement("div");
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.remove();
+    }, 3000); // Remove the notification after 3 seconds
+}
+
 // Function to simulate fetching quotes from a server
 async function fetchQuotesFromServer() {
     try {
@@ -122,13 +134,14 @@ async function fetchQuotesFromServer() {
             category: post.body
         }));
 
-        // Resolve conflicts between local and server quotes
+        let conflictsResolved = false;
+
         formattedQuotes.forEach(serverQuote => {
             const localIndex = quotes.findIndex(localQuote => localQuote.text === serverQuote.text);
             if (localIndex !== -1) {
                 // Conflict detected, resolve it
                 quotes[localIndex] = resolveConflicts(quotes[localIndex], serverQuote);
-                alert('Data conflict detected and resolved with server data.');
+                conflictsResolved = true;
             } else {
                 // No conflict, add new server quote to local
                 quotes.push(serverQuote);
@@ -138,16 +151,15 @@ async function fetchQuotesFromServer() {
         saveQuotes();
         populateCategories();
 
+        if (conflictsResolved) {
+            showNotification("Data conflict detected and resolved with server data.", "warning");
+        }
+        showNotification("Quotes synced with server!", "success");
         console.log("Quotes fetched and conflicts resolved.");
     } catch (error) {
         console.error("Error fetching quotes from server:", error);
+        showNotification("Failed to sync quotes with the server.", "error");
     }
-}
-
-// Function to resolve conflicts
-function resolveConflicts(localQuote, serverQuote) {
-    // Assuming server data takes precedence
-    return serverQuote;
 }
 
 // Function to post a new quote to the server
@@ -167,8 +179,10 @@ async function postQuoteToServer(quote) {
 
         const serverResponse = await response.json();
         console.log("Quote posted to server:", serverResponse);
+        showNotification("Quote posted to server successfully!", "success");
     } catch (error) {
         console.error("Error posting quote to server:", error);
+        showNotification("Failed to post quote to server.", "error");
     }
 }
 
