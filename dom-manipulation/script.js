@@ -10,7 +10,8 @@ const quotes = [
 function showRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const quoteDisplay = document.getElementById("quoteDisplay");
-    quoteDisplay.textContent = `${quotes[randomIndex].text} - ${quotes[randomIndex].category}`;
+    // Using innerHTML to display the quote and category
+    quoteDisplay.innerHTML = `<strong>${quotes[randomIndex].text}</strong> - <em>${quotes[randomIndex].category}</em>`;
 }
 
 // Function to add a new quote
@@ -21,8 +22,11 @@ function addQuote() {
     if (quoteText && quoteCategory) {
         const newQuote = { text: quoteText, category: quoteCategory };
         quotes.push(newQuote); // Add new quote to the quotes array
-        document.getElementById("newQuoteText").value = ""; // Clear input
-        document.getElementById("newQuoteCategory").value = ""; // Clear input
+
+        // Clear the input fields
+        document.getElementById("newQuoteText").value = "";
+        document.getElementById("newQuoteCategory").value = "";
+
         alert('Quote added successfully!');
     } else {
         alert('Please fill in both fields.');
