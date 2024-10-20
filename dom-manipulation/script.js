@@ -75,6 +75,12 @@ function addQuote() {
         alert('Please fill in both fields.');
     }
 }
+// Function to sync quotes between local storage and server
+async function syncQuotes() {
+    console.log("Syncing quotes with the server...");
+    await fetchQuotesFromServer(); // Fetch updates from the server
+    console.log("Sync complete.");
+}
 
 // Function to populate the category filter dropdown
 function populateCategories() {
